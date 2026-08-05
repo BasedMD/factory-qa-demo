@@ -13,8 +13,8 @@ def natural_size(num_bytes):
     if num_bytes < 1000:
         return f"{num_bytes} B"
     size = float(num_bytes)
-    for suffix in _SUFFIXES:
-        size /= 1000.0
-        if size < 1000.0:
-            return f"{size:.1f} {suffix}"
-    return f"{size:.1f} {_SUFFIXES[-1]}"
+    for i, suffix in enumerate(_SUFFIXES):
+        unit = 1000 ** (i + 2)
+        if size < unit:
+            return f"{1000 * size / unit:.1f} {suffix}"
+    return f"{1000 * size / unit:.1f} {_SUFFIXES[-1]}"
