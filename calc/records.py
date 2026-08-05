@@ -15,3 +15,19 @@ def resolve_current(records, key):
     if not candidates:
         return None
     return max(candidates, key=lambda r: r["ts"])["value"]
+
+
+def latest_by_time(records, key):
+    """Newest record dict for `key` by timestamp — display-only recency.
+
+    This is the activity-feed helper: it deliberately IGNORES supersession
+    (feeds show the most recent write, corrections included) and returns
+    the whole record dict, or None when no record matches. A withholding
+    correction (value None) is a record like any other here. Do NOT use
+    this for value resolution — resolve_current is the correctness-bearing
+    reader.
+    """
+    mine = [r for r in records if r["key"] == key]
+    if not mine:
+        return None
+    return max(mine, key=lambda r: r["ts"])
